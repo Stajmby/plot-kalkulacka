@@ -1,5 +1,62 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <title>Kalkulačka betonového plotu</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f4f4;
+            padding: 20px;
+        }
+
+        .kalkulacka {
+            max-width: 400px;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        input {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background: #2c7be5;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #1a68d1;
+        }
+
+        #vysledek {
+            margin-top: 20px;
+            background: #f0f8ff;
+            padding: 10px;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+
 <body>
 
+<div class="kalkulacka">
     <h1>Kalkulačka betonového plotu</h1>
 
     <label>
@@ -7,91 +64,25 @@
         <input type="number" id="delka">
     </label>
 
-    <br><br>
-
     <label>
         Výška plotu (m):
         <input type="number" id="vyska">
     </label>
 
-    <br><br>
-<label>
-    <input type="checkbox" id="roh">
-    Plot má roh (rohový sloupek)
-</label>
-
-<br><br>
+    <label>
+        <input type="checkbox" id="roh">
+        Plot má roh (rohový sloupek)
+    </label>
 
     <button onclick="vypocitejCenu()">Vypočítat cenu</button>
 
-<p id="vysledek"></p>
+    <div id="vysledek"></div>
+</div>
+
 <script>
 async function vypocitejCenu() {
     const delka = Number(document.getElementById("delka").value);
     const vyska = Number(document.getElementById("vyska").value);
 
     const sirkaPole = 2;
-    const pocetPoli = Math.ceil(delka / sirkaPole);
-    const pocetSloupku = pocetPoli + 1;
-
-    let desekNaPole = 0;
-    if (vyska === 1) desekNaPole = 2;
-    if (vyska === 1.5) desekNaPole = 3;
-    if (vyska === 2) desekNaPole = 4;
-
-    const pocetDesek = pocetPoli * desekNaPole;
-
-    const response = await fetch("ceny.json");
-    const ceny = await response.json();
-
-    const cenaPaneluCelkem = pocetDesek * ceny.panel_standard;
-    const cenaSloupkuPrubeznych = (pocetSloupku - 1) * ceny.sloupek_prubezny;
-    const cenaSloupkuKoncovych = 2 * ceny.sloupek_koncovy;
-
-    const maRoh = document.getElementById("roh").checked;
-    const pocetRohovychSloupku = maRoh ? 1 : 0;
-    const cenaRohovychSloupku = pocetRohovychSloupku * ceny.sloupek_rohovy;
-
-    const celkovaCena =
-        cenaPaneluCelkem +
-        cenaSloupkuPrubeznych +
-        cenaSloupkuKoncovych +
-        cenaRohovychSloupku;
-
-    document.getElementById("vysledek").innerHTML =
-        `<strong>Materiál:</strong><br>
-        Počet polí: ${pocetPoli}<br>
-        Počet sloupků: ${pocetSloupku}<br>
-        Počet desek: ${pocetDesek}<br><br>
-
-        <strong>Cena:</strong><br>
-        Panely: ${cenaPaneluCelkem.toLocaleString()} Kč<br>
-        Sloupky průběžné: ${cenaSloupkuPrubeznych.toLocaleString()} Kč<br>
-        Sloupky koncové: ${cenaSloupkuKoncovych.toLocaleString()} Kč<br>
-        Sloupky rohové: ${cenaRohovychSloupku.toLocaleString()} Kč<br>
-        <strong>Celkem: ${celkovaCena.toLocaleString()} Kč</strong>`;
-}
-</script>
-
-<strong>Cena:</strong><br>
-Panely: ${cenaPaneluCelkem.toLocaleString()} Kč<br>
-Sloupky průběžné: ${cenaSloupkuPrubeznych.toLocaleString()} Kč<br>
-Sloupky koncové: ${cenaSloupkuKoncovych.toLocaleString()} Kč<br>
-Sloupky rohové: ${cenaRohovychSloupku.toLocaleString()} Kč<br>
-<strong>Celkem: ${celkovaCena.toLocaleString()} Kč</strong>s
-
-    document.getElementById("vysledek").innerHTML =
-        `<strong>Materiál:</strong><br>
-        Počet polí: ${pocetPoli}<br>
-        Počet sloupků: ${pocetSloupku}<br>
-        Počet desek: ${pocetDesek}<br><br>
-
-        <strong>Cena:</strong><br>
-        Panely: ${cenaPaneluCelkem.toLocaleString()} Kč<br>
-        Sloupky průběžné: ${cenaSloupkuPrubeznych.toLocaleString()} Kč<br>
-        Sloupky koncové: ${cenaSloupkuKoncovych.toLocaleString()} Kč<br>
-        <strong>Celkem: ${celkovaCena.toLocaleString()} Kč</strong>`;
-}
-</script>
-
-</body>
+    const pocetPoli = Math.ceil

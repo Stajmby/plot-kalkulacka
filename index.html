@@ -24,7 +24,7 @@ function vypocitejCenu() {
     const delka = Number(document.getElementById("delka").value);
     const vyska = Number(document.getElementById("vyska").value);
 
-    const sirkaPole = 2; // metry
+    const sirkaPole = 2;
 
     const pocetPoli = Math.ceil(delka / sirkaPole);
     const pocetSloupku = pocetPoli + 1;
@@ -37,11 +37,24 @@ function vypocitejCenu() {
 
     const pocetDesek = pocetPoli * desekNaPole;
 
+    // 👉 ORIENTAČNÍ CENY
+    const cenaDesky = 450;
+    const cenaSloupku = 900;
+
+    const cenaDesekCelkem = pocetDesek * cenaDesky;
+    const cenaSloupkuCelkem = pocetSloupku * cenaSloupku;
+    const celkovaCena = cenaDesekCelkem + cenaSloupkuCelkem;
+
     document.getElementById("vysledek").innerHTML =
         `<strong>Materiál:</strong><br>
         Počet polí: ${pocetPoli}<br>
         Počet sloupků: ${pocetSloupku}<br>
-        Počet desek: ${pocetDesek}`;
+        Počet desek: ${pocetDesek}<br><br>
+
+        <strong>Cena:</strong><br>
+        Desky: ${cenaDesekCelkem} Kč<br>
+        Sloupky: ${cenaSloupkuCelkem} Kč<br>
+        <strong>Celkem: ${celkovaCena} Kč</strong>`;
 }
 </script>
 

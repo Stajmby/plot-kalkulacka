@@ -1,122 +1,125 @@
 <!DOCTYPE html>
 <html lang="cs">
 <head>
-<style>
-:root {
-    --primarni: #2e5e3a;
-    --sekundarni: #eef3ef;
-    --text: #1f1f1f;
-}
-
-body {
-    font-family: Arial, sans-serif;
-    background: var(--sekundarni);
-    padding: 20px;
-    color: var(--text);
-}
-
-.kalkulacka {
-    max-width: 420px;
-    margin: 0 auto;
-    background: #ffffff;
-    padding: 25px;
-    border-radius: 10px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.08);
-}
-
-h1 {
-    text-align: center;
-    margin-bottom: 20px;
-    color: var(--primarni);
-}
-
-label {
-    display: block;
-    margin-bottom: 15px;
-    font-weight: bold;
-}
-
-input[type="number"] {
-    width: 100%;
-    padding: 8px;
-    margin-top: 5px;
-    font-size: 16px;
-}
-
-input[type="checkbox"] {
-    margin-right: 8px;
-}
-
-button {
-    width: 100%;
-    padding: 12px;
-    background: var(--primarni);
-    color: white;
-    border: none;
-    border-radius: 6px;
-    font-size: 16px;
-    cursor: pointer;
-}
-
-button:hover {
-    background: #244d31; /* o něco tmavší zelená */
-}
-
-#vysledek {
-    margin-top: 20px;
-    background: var(--sekundarni);
-    padding: 15px;
-    border-radius: 6px;
-    font-size: 15px;
-    line-height: 1.5;
-}
-</style>
-
     <meta charset="UTF-8">
     <title>Kalkulačka betonového plotu</title>
+
+    <style>
+    :root {
+        --primarni: #2e5e3a;
+        --sekundarni: #eef3ef;
+        --text: #1f1f1f;
+    }
+
+    body {
+        font-family: Arial, sans-serif;
+        background: var(--sekundarni);
+        padding: 20px;
+        color: var(--text);
+    }
+
+    .kalkulacka {
+        max-width: 420px;
+        margin: 0 auto;
+        background: #ffffff;
+        padding: 25px;
+        border-radius: 10px;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+    }
+
+    h1 {
+        text-align: center;
+        margin-bottom: 20px;
+        color: var(--primarni);
+    }
+
+    label {
+        display: block;
+        margin-bottom: 15px;
+        font-weight: bold;
+    }
+
+    input[type="number"],
+    input[type="text"],
+    input[type="email"] {
+        width: 100%;
+        padding: 8px;
+        margin-top: 5px;
+        font-size: 16px;
+    }
+
+    input[type="checkbox"] {
+        margin-right: 8px;
+    }
+
+    button {
+        width: 100%;
+        padding: 12px;
+        background: var(--primarni);
+        color: white;
+        border: none;
+        border-radius: 6px;
+        font-size: 16px;
+        cursor: pointer;
+    }
+
+    button:hover {
+        background: #244d31;
+    }
+
+    #vysledek {
+        margin-top: 20px;
+        background: var(--sekundarni);
+        padding: 15px;
+        border-radius: 6px;
+        font-size: 15px;
+        line-height: 1.5;
+    }
+    </style>
 </head>
 
 <body>
 
-<div class="kalkulacka">
+<form class="kalkulacka" action="https://formspree.io/f/mykkkenv" method="POST">
 
-<h1>Kalkulačka betonového plotu</h1>
+    <h1>Kalkulačka betonového plotu</h1>
 
-<label>
-    Délka plotu (m):
-    <input type="number" id="delka">
-</label>
+    <label>
+        Délka plotu (m):
+        <input type="number" id="delka" required>
+    </label>
 
-<label>
-    Výška plotu (m):
-    <input type="number" id="vyska">
-</label>
+    <label>
+        Výška plotu (m):
+        <input type="number" id="vyska" required>
+    </label>
 
-<label>
-    <input type="checkbox" id="roh">
-    Plot má roh (rohový sloupek)
-</label>
+    <label>
+        <input type="checkbox" id="roh">
+        Plot má roh
+    </label>
 
-<label>
-    Jméno:
-    <input type="text" id="jmeno">
-</label>
+    <button type="button" onclick="vypocitejCenu()">Vypočítat cenu</button>
 
-<label>
-    E-mail:
-    <input type="email" id="email">
-</label>
+    <p id="vysledek"></p>
 
+    <!-- SKRYTÝ VÝPOČET PRO FORM -->
+    <input type="hidden" name="vypocet" id="vypocet-hidden">
 
-<button onclick="vypocitejCenu()">Vypočítat cenu</button>
+    <!-- KONTAKT -->
+    <label>
+        Jméno:
+        <input type="text" name="jmeno" required>
+    </label>
 
-<p id="vysledek"></p>
+    <label>
+        E-mail:
+        <input type="email" name="email" required>
+    </label>
 
-<button onclick="odeslatPoptavku()">Odeslat poptávku</button>
+    <button type="submit">Odeslat poptávku</button>
 
-</div>
-
-<br><br>
+</form>
 
 <script>
 async function vypocitejCenu() {
@@ -141,9 +144,11 @@ async function vypocitejCenu() {
     const cenaSloupkuPrubeznych = (pocetSloupku - 1) * ceny.sloupek_prubezny;
     const cenaSloupkuKoncovych = 2 * ceny.sloupek_koncovy;
 
-    const maRoh = document.getElementById("roh").checked;
-    const pocetRohovychSloupku = maRoh ? 1 : 0;
-    const cenaRohovychSloupku = pocetRohovychSloupku * ceny.sloupek_rohovy;
+    const pocetRohovychSloupku =
+        document.getElementById("roh").checked ? 1 : 0;
+
+    const cenaRohovychSloupku =
+        pocetRohovychSloupku * ceny.sloupek_rohovy;
 
     const celkovaCena =
         cenaPaneluCelkem +
@@ -151,7 +156,7 @@ async function vypocitejCenu() {
         cenaSloupkuKoncovych +
         cenaRohovychSloupku;
 
-    document.getElementById("vysledek").innerHTML =
+    const vystup =
         `<strong>Materiál:</strong><br>
         Počet polí: ${pocetPoli}<br>
         Počet sloupků: ${pocetSloupku}<br>
@@ -163,30 +168,11 @@ async function vypocitejCenu() {
         Sloupky koncové: ${cenaSloupkuKoncovych.toLocaleString()} Kč<br>
         Sloupky rohové: ${cenaRohovychSloupku.toLocaleString()} Kč<br>
         <strong>Celkem: ${celkovaCena.toLocaleString()} Kč</strong>`;
+
+    document.getElementById("vysledek").innerHTML = vystup;
+    document.getElementById("vypocet-hidden").value =
+        vystup.replace(/<br>/g, "\n").replace(/<[^>]*>/g, "");
 }
-
-function odeslatPoptavku() {
-    const jmeno = document.getElementById("jmeno").value;
-    const email = document.getElementById("email").value;
-    const vysledek = document.getElementById("vysledek").innerText;
-
-    if (!jmeno || !email || !vysledek) {
-        alert("Vyplňte jméno, e-mail a nejprve spočítejte cenu.");
-        return;
-    }
-
-    const predmet = encodeURIComponent("Poptávka – betonový plot");
-    const telo = encodeURIComponent(
-        `Jméno: ${jmeno}\n` +
-        `E-mail: ${email}\n\n` +
-        `Výpočet:\n${vysledek}`
-    );
-
-    window.location.href =
-        `mailto:matestesteinbauer@gmail.com?subject=${predmet}&body=${telo}`;
-}
-
-
 </script>
 
 </body>

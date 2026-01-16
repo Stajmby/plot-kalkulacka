@@ -2,10 +2,17 @@
 <html lang="cs">
 <head>
 <style>
+:root {
+    --primarni: #2e5e3a;
+    --sekundarni: #eef3ef;
+    --text: #1f1f1f;
+}
+
 body {
     font-family: Arial, sans-serif;
-    background: #f2f2f2;
+    background: var(--sekundarni);
     padding: 20px;
+    color: var(--text);
 }
 
 .kalkulacka {
@@ -14,12 +21,13 @@ body {
     background: #ffffff;
     padding: 25px;
     border-radius: 10px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.08);
 }
 
 h1 {
     text-align: center;
     margin-bottom: 20px;
+    color: var(--primarni);
 }
 
 label {
@@ -42,7 +50,7 @@ input[type="checkbox"] {
 button {
     width: 100%;
     padding: 12px;
-    background: #1f7ae0;
+    background: var(--primarni);
     color: white;
     border: none;
     border-radius: 6px;
@@ -51,12 +59,12 @@ button {
 }
 
 button:hover {
-    background: #155fb0;
+    background: #244d31; /* o něco tmavší zelená */
 }
 
 #vysledek {
     margin-top: 20px;
-    background: #f7fbff;
+    background: var(--sekundarni);
     padding: 15px;
     border-radius: 6px;
     font-size: 15px;

@@ -20,7 +20,7 @@
 
 <p id="vysledek"></p>
 <script>
-function vypocitejCenu() {
+async function vypocitejCenu() {
     const delka = Number(document.getElementById("delka").value);
     const vyska = Number(document.getElementById("vyska").value);
 
@@ -30,19 +30,18 @@ function vypocitejCenu() {
     const pocetSloupku = pocetPoli + 1;
 
     let desekNaPole = 0;
-
     if (vyska === 1) desekNaPole = 2;
     if (vyska === 1.5) desekNaPole = 3;
     if (vyska === 2) desekNaPole = 4;
 
     const pocetDesek = pocetPoli * desekNaPole;
 
-    // 👉 ORIENTAČNÍ CENY
-    const cenaDesky = 450;
-    const cenaSloupku = 900;
+    // 👉 NAČTENÍ CEN ZE SOUBORU
+    const response = await fetch("ceny.json");
+    const ceny = await response.json();
 
-    const cenaDesekCelkem = pocetDesek * cenaDesky;
-    const cenaSloupkuCelkem = pocetSloupku * cenaSloupku;
+    const cenaDesekCelkem = pocetDesek * ceny.deska;
+    const cenaSloupkuCelkem = pocetSloupku * ceny.sloupek;
     const celkovaCena = cenaDesekCelkem + cenaSloupkuCelkem;
 
     document.getElementById("vysledek").innerHTML =
@@ -57,6 +56,5 @@ function vypocitejCenu() {
         <strong>Celkem: ${celkovaCena} Kč</strong>`;
 }
 </script>
-
 
 </body>

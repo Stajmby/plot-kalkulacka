@@ -97,24 +97,6 @@ button:hover {
 
 <br><br>
 
-<label>
-    Výška plotu (m):
-    <input type="number" id="vyska">
-</label>
-
-<br><br>
-
-<label>
-    <input type="checkbox" id="roh">
-    Plot má roh (rohový sloupek)
-</label>
-
-<br><br>
-
-<button onclick="vypocitejCenu()">Vypočítat cenu</button>
-
-<p id="vysledek"></p>
-
 <script>
 async function vypocitejCenu() {
     const delka = Number(document.getElementById("delka").value);

@@ -97,9 +97,22 @@ button:hover {
     Plot má roh (rohový sloupek)
 </label>
 
+<label>
+    Jméno:
+    <input type="text" id="jmeno">
+</label>
+
+<label>
+    E-mail:
+    <input type="email" id="email">
+</label>
+
+
 <button onclick="vypocitejCenu()">Vypočítat cenu</button>
 
 <p id="vysledek"></p>
+
+<button onclick="odeslatPoptavku()">Odeslat poptávku</button>
 
 </div>
 
@@ -151,6 +164,29 @@ async function vypocitejCenu() {
         Sloupky rohové: ${cenaRohovychSloupku.toLocaleString()} Kč<br>
         <strong>Celkem: ${celkovaCena.toLocaleString()} Kč</strong>`;
 }
+
+function odeslatPoptavku() {
+    const jmeno = document.getElementById("jmeno").value;
+    const email = document.getElementById("email").value;
+    const vysledek = document.getElementById("vysledek").innerText;
+
+    if (!jmeno || !email || !vysledek) {
+        alert("Vyplňte jméno, e-mail a nejprve spočítejte cenu.");
+        return;
+    }
+
+    const predmet = encodeURIComponent("Poptávka – betonový plot");
+    const telo = encodeURIComponent(
+        `Jméno: ${jmeno}\n` +
+        `E-mail: ${email}\n\n` +
+        `Výpočet:\n${vysledek}`
+    );
+
+    window.location.href =
+        `mailto:matestesteinbauer@gmail.com?subject=${predmet}&body=${telo}`;
+}
+
+
 </script>
 
 </body>

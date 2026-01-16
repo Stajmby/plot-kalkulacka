@@ -1,0 +1,49 @@
+<body>
+
+    <h1>Kalkulačka betonového plotu</h1>
+
+    <label>
+        Délka plotu (m):
+        <input type="number" id="delka">
+    </label>
+
+    <br><br>
+
+    <label>
+        Výška plotu (m):
+        <input type="number" id="vyska">
+    </label>
+
+    <br><br>
+
+    <button onclick="vypocitejCenu()">Vypočítat cenu</button>
+
+<p id="vysledek"></p>
+<script>
+function vypocitejCenu() {
+    const delka = Number(document.getElementById("delka").value);
+    const vyska = Number(document.getElementById("vyska").value);
+
+    const sirkaPole = 2; // metry
+
+    const pocetPoli = Math.ceil(delka / sirkaPole);
+    const pocetSloupku = pocetPoli + 1;
+
+    let desekNaPole = 0;
+
+    if (vyska === 1) desekNaPole = 2;
+    if (vyska === 1.5) desekNaPole = 3;
+    if (vyska === 2) desekNaPole = 4;
+
+    const pocetDesek = pocetPoli * desekNaPole;
+
+    document.getElementById("vysledek").innerHTML =
+        `<strong>Materiál:</strong><br>
+        Počet polí: ${pocetPoli}<br>
+        Počet sloupků: ${pocetSloupku}<br>
+        Počet desek: ${pocetDesek}`;
+}
+</script>
+
+
+</body>

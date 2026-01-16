@@ -1,4 +1,6 @@
 {
-  "deska": 450,
-  "sloupek": 900
+  "panel_standard": 450,
+  "sloupek_prubezny": 672,
+  "sloupek_koncovy": 672,
+  "sloupek_rohovy": 725
 }

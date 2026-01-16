@@ -25,7 +25,6 @@ async function vypocitejCenu() {
     const vyska = Number(document.getElementById("vyska").value);
 
     const sirkaPole = 2;
-
     const pocetPoli = Math.ceil(delka / sirkaPole);
     const pocetSloupku = pocetPoli + 1;
 
@@ -36,13 +35,13 @@ async function vypocitejCenu() {
 
     const pocetDesek = pocetPoli * desekNaPole;
 
-    // 👉 NAČTENÍ CEN ZE SOUBORU
     const response = await fetch("ceny.json");
     const ceny = await response.json();
 
-    const cenaDesekCelkem = pocetDesek * ceny.deska;
-    const cenaSloupkuCelkem = pocetSloupku * ceny.sloupek;
-    const celkovaCena = cenaDesekCelkem + cenaSloupkuCelkem;
+    const cenaPaneluCelkem = pocetDesek * ceny.panel_standard;
+    const cenaSloupkuPrubeznych = (pocetSloupku - 1) * ceny.sloupek_prubezny;
+    const cenaSloupkuKoncovych = 2 * ceny.sloupek_koncovy; // 2 koncové
+    const celkovaCena = cenaPaneluCelkem + cenaSloupkuPrubeznych + cenaSloupkuKoncovych + (pocetSloupku * ceny.sloupek_rohovy * 0);
 
     document.getElementById("vysledek").innerHTML =
         `<strong>Materiál:</strong><br>
@@ -51,9 +50,10 @@ async function vypocitejCenu() {
         Počet desek: ${pocetDesek}<br><br>
 
         <strong>Cena:</strong><br>
-        Desky: ${cenaDesekCelkem} Kč<br>
-        Sloupky: ${cenaSloupkuCelkem} Kč<br>
-        <strong>Celkem: ${celkovaCena} Kč</strong>`;
+        Panely: ${cenaPaneluCelkem.toLocaleString()} Kč<br>
+        Sloupky průběžné: ${cenaSloupkuPrubeznych.toLocaleString()} Kč<br>
+        Sloupky koncové: ${cenaSloupkuKoncovych.toLocaleString()} Kč<br>
+        <strong>Celkem: ${celkovaCena.toLocaleString()} Kč</strong>`;
 }
 </script>
 

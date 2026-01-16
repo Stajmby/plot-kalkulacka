@@ -46,14 +46,32 @@ async function vypocitejCenu() {
 
     const cenaPaneluCelkem = pocetDesek * ceny.panel_standard;
     const cenaSloupkuPrubeznych = (pocetSloupku - 1) * ceny.sloupek_prubezny;
-    const cenaSloupkuKoncovych = 2 * ceny.sloupek_koncovy; // 2 koncové
+    const cenaSloupkuKoncovych = 2 * ceny.sloupek_koncovy;
+
     const maRoh = document.getElementById("roh").checked;
-const pocetRohovychSloupku = maRoh ? 1 : 0;
+    const pocetRohovychSloupku = maRoh ? 1 : 0;
+    const cenaRohovychSloupku = pocetRohovychSloupku * ceny.sloupek_rohovy;
 
-const cenaRohovychSloupku =
-    pocetRohovychSloupku * ceny.sloupek_rohovy;
+    const celkovaCena =
+        cenaPaneluCelkem +
+        cenaSloupkuPrubeznych +
+        cenaSloupkuKoncovych +
+        cenaRohovychSloupku;
 
-Sloupky rohové: ${cenaRohovychSloupku.toLocaleString()} Kč<br>
+    document.getElementById("vysledek").innerHTML =
+        `<strong>Materiál:</strong><br>
+        Počet polí: ${pocetPoli}<br>
+        Počet sloupků: ${pocetSloupku}<br>
+        Počet desek: ${pocetDesek}<br><br>
+
+        <strong>Cena:</strong><br>
+        Panely: ${cenaPaneluCelkem.toLocaleString()} Kč<br>
+        Sloupky průběžné: ${cenaSloupkuPrubeznych.toLocaleString()} Kč<br>
+        Sloupky koncové: ${cenaSloupkuKoncovych.toLocaleString()} Kč<br>
+        Sloupky rohové: ${cenaRohovychSloupku.toLocaleString()} Kč<br>
+        <strong>Celkem: ${celkovaCena.toLocaleString()} Kč</strong>`;
+}
+</script>
 
 <strong>Cena:</strong><br>
 Panely: ${cenaPaneluCelkem.toLocaleString()} Kč<br>

@@ -102,10 +102,10 @@
     </label>
 
     <label>
-        Výška plotu (m): (min. 1m - max. 2,5m)
-        <input type="number" id="vyska" min="1"
-    max="2.5"
-    step="0.5"required>
+        Výška plotu (cm): (100cm - 250cm)
+        <input type="number" id="vyska" min="100"
+    max="250"
+    step="50"required>
     </label>
 
     <label>
@@ -140,8 +140,23 @@
 
 <script>
 async function vypocitejCenu() {
-    const delka = Number(document.getElementById("delka").value);
+    
+const delka = Number(document.getElementById("delka").value);
     const vyska = Number(document.getElementById("vyska").value);
+
+if (!delka || delka <= 0) {
+        alert("Zadejte platnou délku plotu v metrech.");
+        return;
+    }
+
+    // kontrola výšky
+    const povoleneVysky = [100, 150, 200, 250];
+    if (!povoleneVysky.includes(vyska)) {
+        alert("Výška plotu může být pouze v rozmezí 100-250cm.");
+        return;
+    }
+
+
 
     const sirkaPole = 2;
     const pocetPoli = Math.ceil(delka / sirkaPole);

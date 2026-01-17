@@ -101,13 +101,18 @@
         <input type="number" id="delka" required>
     </label>
 
-    <label>
-        Výška plotu (cm): (100cm - 250cm)
-        <input type="number" id="vyska" min="100"
-    max="250"
-    step="50"required
-oninput="kontrolaVysky()">
-    </label>
+<label>
+    Výška plotu:
+    <select id="vyska" onchange="kontrolaVysky()">
+        <option value="">Vyberte výšku</option>
+        <option value="100">100 cm</option>
+        <option value="150">150 cm</option>
+        <option value="200">200 cm</option>
+        <option value="250">250 cm</option>
+    </select>
+</label>
+
+<div id="chyba-vyska" style="color:red; font-size:14px;"></div>
 
 <div id="chyba-vyska" style="color:red; font-size:14px;"></div>
 
@@ -168,9 +173,10 @@ if (!delka || delka <= 0) {
     const pocetSloupku = pocetPoli + 1;
 
     let desekNaPole = 0;
-    if (vyska === 1) desekNaPole = 2;
-    if (vyska === 1.5) desekNaPole = 3;
-    if (vyska === 2) desekNaPole = 4;
+    if (vyska === 100) desekNaPole = 2;
+    if (vyska === 150) desekNaPole = 3;
+    if (vyska === 200) desekNaPole = 4;
+    if (vyska === 250) desekNaPole = 5;
 
     const pocetDesek = pocetPoli * desekNaPole;
 

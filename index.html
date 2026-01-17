@@ -156,6 +156,19 @@
         <input type="number" id="delka" required>
     </label>
 
+<label>
+    Výška plotu:
+    <select id="vyska" onchange="aktualizujBarvy()">
+        <option value="">Vyberte výšku</option>
+        <option value="100">100 cm</option>
+        <option value="150">150 cm</option>
+        <option value="175">175 cm</option>
+        <option value="200">200 cm</option>
+        <option value="250">250 cm</option>
+    </select>
+</label>
+
+
 <div class="sekce">
     <p><strong>Barva:</strong></p>
 
@@ -193,17 +206,6 @@
 </div>
 
 
-<label>
-    Výška plotu:
-    <select id="vyska" onchange="aktualizujBarvy()">
-        <option value="">Vyberte výšku</option>
-        <option value="100">100 cm</option>
-        <option value="150">150 cm</option>
-        <option value="175">175 cm</option>
-        <option value="200">200 cm</option>
-        <option value="250">250 cm</option>
-    </select>
-</label>
 
 <p id="info-vyska" style="font-size:14px; color:#555;"></p>
 

@@ -81,6 +81,57 @@
     margin: 0 auto 15px auto;
     max-width: 180px;
 }
+.barvy {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+}
+
+.barva {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    gap: 6px;
+}
+
+/* schováme radio */
+.barva input {
+    display: none;
+}
+
+/* samotné kolečko */
+.kolecko {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    border: 3px solid #2e5e3a;
+    box-sizing: border-box;
+}
+
+/* barvy */
+.kolecko.zelena {
+    background: #0a8f4d;
+}
+
+.kolecko.antracit {
+    background: #5a5a5a;
+}
+
+.kolecko.zinek {
+    background: #f2f2f2;
+    border: 3px solid #bbb;
+}
+
+/* aktivní stav */
+.barva input:checked + .kolecko {
+    outline: 4px solid #2e5e3a;
+    outline-offset: 3px;
+}
+
+.popis {
+    font-size: 14px;
+}
 
 
     </style>
@@ -100,6 +151,31 @@
         Délka plotu (m):
         <input type="number" id="delka" required>
     </label>
+
+<div class="sekce">
+    <p><strong>Barva:</strong></p>
+
+    <div class="barvy">
+        <label class="barva">
+            <input type="radio" name="barva" value="zelena" checked>
+            <span class="kolecko zelena"></span>
+            <span class="popis">Zelená</span>
+        </label>
+
+        <label class="barva">
+            <input type="radio" name="barva" value="antracit">
+            <span class="kolecko antracit"></span>
+            <span class="popis">Antracitová</span>
+        </label>
+
+        <label class="barva">
+            <input type="radio" name="barva" value="zinek">
+            <span class="kolecko zinek"></span>
+            <span class="popis">Zinek</span>
+        </label>
+    </div>
+</div>
+
 
 <label>
     Výška plotu:
@@ -230,6 +306,7 @@ function kontrolaVysky() {
         chyba.textContent = "";
     }
 }
+const barva = document.querySelector('input[name="barva"]:checked').value;
 
 </script>
 

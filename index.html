@@ -80,11 +80,11 @@
     }
 
 	.logo {
-    position: absolute;
-    top: 15px;
-    left: 15px;
-    max-width: 320px;
+    display: block;
+    margin: 15px auto 10px auto; /* ← TADY */
+    max-width: 200px;
 }
+
 
 	.zed {
     width: 100%;
@@ -95,10 +95,11 @@
 }
 
 	.fotka {
-    position: absolute;
-    top: 250px;
-    left: 250px;
-    max-width: 150px;
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    max-width: 160px;
+    border-radius: 10px;
 }
 
 .barvy {
@@ -205,11 +206,11 @@
 </head>
 
 <body>
-
+<img src="Martin Steinbauer.png" alt="Foto nenalezeno" class="fotka">
 <form class="kalkulacka"
       action="https://formspree.io/f/mykkkenv"
       method="POST">
-<img src="Martin Steinbauer.png" alt="Foto nenalezeno" class="fotka">
+
 	<img src="logo-ploty-martas.png" alt="Logo nenalezeno" class="logo">
 	<img src="vsechnybarvy.png" alt="Obrázek nenalezen" class="zed">
 

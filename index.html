@@ -5,6 +5,12 @@
     <title>Kalkulačka betonového plotu</title>
 
     <style>
+
+#volby-navic {
+    margin-top: 15px;
+}
+
+
     :root {
         --primarni: #2e5e3a;
         --sekundarni: #eef3ef;
@@ -176,28 +182,28 @@
 
 
 <label class="barva">
-    <input type="radio" name="barva" value="seda">
+    <input type="radio" name="barva" value="seda" onchange="aktualizujVolbyPodleBarvy()">
     <span class="kolecko seda"></span>
     <span>Šedá</span>
 </label>
 
 
       <label class="barva">
-    <input type="radio" name="barva" value="piskovec">
+    <input type="radio" name="barva" value="piskovec" onchange="aktualizujVolbyPodleBarvy()">
     <span class="kolecko piskovec"></span>
     <span>Pískovcová</span>
 </label>
 
 
 <label class="barva">
-    <input type="radio" name="barva" value="hneda">
+    <input type="radio" name="barva" value="hneda" onchange="aktualizujVolbyPodleBarvy()">
     <span class="kolecko hneda"></span>
     <span>Hnědá</span>
 </label>
 
 
 <label class="barva">
-    <input type="radio" name="barva" value="grafit">
+    <input type="radio" name="barva" value="grafit" onchange="aktualizujVolbyPodleBarvy()">
     <span class="kolecko grafit"></span>
     <span>Grafit</span>
 </label>
@@ -205,6 +211,24 @@
     </div>
 </div>
 
+<div id="volby-navic">
+
+    <label>
+        <input type="checkbox" id="sokl">
+        Soklová deska (25 cm)
+    </label>
+
+    <label>
+        <input type="checkbox" id="mrizka">
+        Mřížka nahoře (25 cm)
+    </label>
+
+    <label>
+        <input type="checkbox" id="oblouk">
+        Oblouk
+    </label>
+
+</div>
 
 
 <p id="info-vyska" style="font-size:14px; color:#555;"></p>
@@ -405,6 +429,33 @@ function aktualizujBarvy() {
         });
         return;
     }
+
+function aktualizujVolbyPodleBarvy() {
+    const vybranaBarva = document.querySelector('input[name="barva"]:checked');
+    if (!vybranaBarva) return;
+
+    const vlastnosti = vlastnostiBarev[vybranaBarva.value];
+
+    nastavViditelnost("sokl", vlastnosti.sokl);
+    nastavViditelnost("mrizka", vlastnosti.mrizka);
+    nastavViditelnost("oblouk", vlastnosti.oblouk);
+}
+
+function nastavViditelnost(id, povoleno) {
+    const el = document.getElementById(id);
+    if (!el) return;
+
+    const label = el.closest("label");
+    if (!label) return;
+
+    if (povoleno) {
+        label.style.display = "block";
+    } else {
+        el.checked = false;
+        label.style.display = "none";
+    }
+}
+
 
     const povoleneBarvy = systemyPlotu[vyska].barvy;
     info.textContent = systemyPlotu[vyska].info;

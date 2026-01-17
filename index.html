@@ -160,43 +160,52 @@
     <p><strong>Barva:</strong></p>
 
     <div class="barvy">
-        <label class="barva">
-            <input type="radio" name="barva" value="seda" checked>
-            <span class="kolecko seda"></span>
-            <span class="popis">Šedá</span>
-        </label>
 
-        <label class="barva">
-            <input type="radio" name="barva" value="piskovec">
-            <span class="kolecko piskovec"></span>
-            <span class="popis">Pískovcová</span>
-        </label>
 
 <label class="barva">
-            <input type="radio" name="barva" value="hneda">
-            <span class="kolecko hneda"></span>
-            <span class="popis">Hnědá</span>
-        </label>
+    <input type="radio" name="barva" value="seda">
+    <span class="kolecko seda"></span>
+    <span>Šedá</span>
+</label>
 
-        <label class="barva">
-            <input type="radio" name="barva" value="grafit">
-            <span class="kolecko grafit"></span>
-            <span class="popis">Grafitová</span>
-        </label>
+
+      <label class="barva">
+    <input type="radio" name="barva" value="piskovec">
+    <span class="kolecko piskovec"></span>
+    <span>Pískovcová</span>
+</label>
+
+
+<label class="barva">
+    <input type="radio" name="barva" value="hneda">
+    <span class="kolecko hneda"></span>
+    <span>Hnědá</span>
+</label>
+
+
+<label class="barva">
+    <input type="radio" name="barva" value="grafit">
+    <span class="kolecko grafit"></span>
+    <span>Grafit</span>
+</label>
+
     </div>
 </div>
 
 
 <label>
     Výška plotu:
-    <select id="vyska" onchange="kontrolaVysky()">
+    <select id="vyska" onchange="aktualizujBarvy()">
         <option value="">Vyberte výšku</option>
         <option value="100">100 cm</option>
         <option value="150">150 cm</option>
+        <option value="175">175 cm</option>
         <option value="200">200 cm</option>
         <option value="250">250 cm</option>
     </select>
 </label>
+
+<p id="info-vyska" style="font-size:14px; color:#555;"></p>
 
 <div id="chyba-vyska" style="color:red; font-size:14px;"></div>
 
@@ -317,6 +326,100 @@ function kontrolaVysky() {
     }
 }
 const barva = document.querySelector('input[name="barva"]:checked').value;
+const systemyPlotu = {
+  100: {
+    barvy: ["seda"],
+    info: "Ve výšce 100 cm je dostupná pouze barva šedá."
+  },
+
+  150: {
+    barvy: ["seda", "grafit", "piskovec"],
+    info: "Ve výšce 150 cm jsou dostupné barvy šedá, grafit a pískovec."
+  },
+
+  175: {
+    barvy: ["seda"],
+    info: "Výška 175 cm je dostupná pouze v barvě šedá."
+  },
+
+  200: {
+    barvy: ["seda", "hneda", "grafit", "piskovec"],
+    info: "Výška 200 cm je dostupná ve všech nabízených barvách."
+  },
+
+  250: {
+    barvy: ["seda", "piskovec"],
+    info: "Ve výšce 250 cm jsou dostupné pouze barvy šedá a pískovec."
+  }
+};
+
+
+
+const vlastnostiBarev = {
+  seda: {
+    sokl: true,
+    mrizka: true,
+    oblouk: true,
+    roh: true,
+    typyDesek: ["jednostranna", "oboustranna"]
+  },
+
+  hneda: {
+    sokl: false,
+    mrizka: false,
+    oblouk: false,
+    roh: false,
+    typyDesek: ["jediny"]
+  },
+
+  grafit: {
+    sokl: false,
+    mrizka: false,
+    oblouk: false,
+    roh: false,
+    typyDesek: ["jediny"]
+  },
+
+  piskovec: {
+    sokl: true,
+    mrizka: true,
+    oblouk: true,
+    roh: true,
+    typyDesek: ["jednostranna", "oboustranna"]
+  }
+};
+
+function aktualizujBarvy() {
+    const vyska = document.getElementById("vyska").value;
+    const info = document.getElementById("info-vyska");
+    const barvyRadia = document.querySelectorAll('input[name="barva"]');
+
+    // když není vybraná výška
+    if (!vyska) {
+        info.textContent = "";
+        barvyRadia.forEach(radio => {
+            radio.disabled = true;
+            radio.checked = false;
+            radio.closest(".barva").style.opacity = "0.4";
+        });
+        return;
+    }
+
+    const povoleneBarvy = systemyPlotu[vyska].barvy;
+    info.textContent = systemyPlotu[vyska].info;
+
+    barvyRadia.forEach(radio => {
+        if (povoleneBarvy.includes(radio.value)) {
+            radio.disabled = false;
+            radio.closest(".barva").style.opacity = "1";
+        } else {
+            radio.disabled = true;
+            radio.checked = false;
+            radio.closest(".barva").style.opacity = "0.3";
+        }
+    });
+}
+
 
 </script>
 

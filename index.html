@@ -160,19 +160,7 @@ if (!delka || delka <= 0) {
         return;
     }
 
-function kontrolaVysky() {
-    console.log("kontrolaVysky se spustila");
 
-    const vyska = Number(document.getElementById("vyska").value);
-    const chyba = document.getElementById("chyba-vyska");
-    const povoleneVysky = [100, 150, 200, 250];
-
-    if (!povoleneVysky.includes(vyska)) {
-        chyba.textContent = "Výška plotu může být pouze 100, 150, 200 nebo 250cm.";
-    } else {
-        chyba.textContent = "";
-    }
-}
 
 
     const sirkaPole = 2;
@@ -222,6 +210,21 @@ function kontrolaVysky() {
     document.getElementById("vypocet-hidden").value =
         vystup.replace(/<br>/g, "\n").replace(/<[^>]*>/g, "");
 }
+
+function kontrolaVysky() {
+    console.log("kontrolaVysky se spustila");
+
+    const vyska = Number(document.getElementById("vyska").value);
+    const chyba = document.getElementById("chyba-vyska");
+    const povoleneVysky = [100, 150, 200, 250];
+
+    if (!povoleneVysky.includes(vyska)) {
+        chyba.textContent = "Výška plotu může být pouze 100, 150, 200 nebo 250cm.";
+    } else {
+        chyba.textContent = "";
+    }
+}
+
 </script>
 
 </body>

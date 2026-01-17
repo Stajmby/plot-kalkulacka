@@ -82,7 +82,9 @@
 
 <form id="formular"
       action="https://formspree.io/f/mykkkenv"
-      method="POST">
+      method="POST"
+      onsubmit="odesliFormular(event)">
+
 
 
     <input type="hidden"
@@ -192,6 +194,31 @@ form.addEventListener("submit", function () {
             "https://stajmby.github.io/plot-kalkulacka/dekujeme.html";
     }, 500);
 });
+</script>
+<script>
+async function odesliFormular(event) {
+    event.preventDefault(); // zastaví klasický submit
+
+    const form = document.getElementById("formular");
+    const data = new FormData(form);
+
+    try {
+        await fetch(form.action, {
+            method: "POST",
+            body: data,
+            headers: {
+                "Accept": "application/json"
+            }
+        });
+
+        // vlastní redirect – TADY rozhodujeme my
+        window.location.href =
+            "https://stajmby.github.io/plot-kalkulacka/dekujeme.html";
+
+    } catch (error) {
+        alert("Chyba při odesílání formuláře. Zkuste to prosím znovu.");
+    }
+}
 </script>
 
 </body>

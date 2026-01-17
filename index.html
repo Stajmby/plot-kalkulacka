@@ -91,7 +91,7 @@
 <form class="kalkulacka"
       action="https://formspree.io/f/mykkkenv"
       method="POST">
-<img src="Martin Steinbauer.png" alt="Ploty Dobrý" class="logo">
+<img src="Martin Steinbauer.png" alt="Foto nenalezeno" class="logo">
 	<img src="logo-ploty-martas.png" alt="Ploty Dobrý" class="logo">
 
     <h1>Kalkulačka betonového plotu</h1>
@@ -163,10 +163,10 @@ if (!delka || delka <= 0) {
 function kontrolaVysky() {
     const vyska = Number(document.getElementById("vyska").value);
     const chyba = document.getElementById("chyba-vyska");
-    const povoleneVysky = [1, 1.5, 2];
+    const povoleneVysky = [100, 150, 200, 250];
 
     if (!povoleneVysky.includes(vyska)) {
-        chyba.textContent = "Výška plotu může být pouze 1 m, 1.5 m nebo 2 m.";
+        chyba.textContent = "Výška plotu může být pouze 100, 150, 200 nebo 250cm.";
     } else {
         chyba.textContent = "";
     }

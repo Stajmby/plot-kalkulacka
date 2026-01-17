@@ -143,6 +143,38 @@
     font-size: 14px;
 }
 
+.zakonceni {
+    display: flex;
+    gap: 12px;
+    margin-top: 10px;
+}
+
+.volba {
+    text-align: center;
+    cursor: pointer;
+}
+
+.volba input {
+    display: none;
+}
+
+.volba img {
+    width: 110px;
+    height: auto;
+    border-radius: 8px;
+    border: 3px solid transparent;
+}
+
+.volba input:checked + img {
+    border-color: #2e5e3a;
+}
+
+.volba span {
+    display: block;
+    margin-top: 6px;
+    font-size: 14px;
+}
+
 
     </style>
 </head>
@@ -182,28 +214,28 @@
 
 
 <label class="barva">
-    <input type="radio" name="barva" value="seda" onchange="aktualizujVolbyPodleBarvy()">
+    <input type="radio" name="barva" value="seda" onchange="zmenaBarvy()">
     <span class="kolecko seda"></span>
     <span>Šedá</span>
 </label>
 
 
       <label class="barva">
-    <input type="radio" name="barva" value="piskovec" onchange="aktualizujVolbyPodleBarvy()">
+    <input type="radio" name="barva" value="piskovec" onchange="zmenaBarvy()">
     <span class="kolecko piskovec"></span>
     <span>Pískovcová</span>
 </label>
 
 
 <label class="barva">
-    <input type="radio" name="barva" value="hneda" onchange="aktualizujVolbyPodleBarvy()">
+    <input type="radio" name="barva" value="hneda" onchange="zmenaBarvy()">
     <span class="kolecko hneda"></span>
     <span>Hnědá</span>
 </label>
 
 
 <label class="barva">
-    <input type="radio" name="barva" value="grafit" onchange="aktualizujVolbyPodleBarvy()">
+    <input type="radio" name="barva" value="grafit" onchange="zmenaBarvy()">
     <span class="kolecko grafit"></span>
     <span>Grafit</span>
 </label>
@@ -227,6 +259,34 @@
         <input type="checkbox" id="oblouk">
         Oblouk
     </label>
+
+</div>
+
+<div class="sekce" id="sekce-zakonceni">
+
+    <p><strong>Zvolte horní zakončení:</strong></p>
+
+    <div class="zakonceni">
+
+        <label class="volba">
+            <input type="radio" name="zakonceni" value="rovne" checked>
+            <img src="rovne.jpg" alt="Rovné zakončení">
+            <span>Rovné</span>
+        </label>
+
+        <label class="volba">
+            <input type="radio" name="zakonceni" value="mrizka">
+            <img src="mrizka.jpg" alt="Mřížka">
+            <span>Mřížka</span>
+        </label>
+
+        <label class="volba">
+            <input type="radio" name="zakonceni" value="oblouk">
+            <img src="oblouk.jpg" alt="Oblouk">
+            <span>Oblouk</span>
+        </label>
+
+    </div>
 
 </div>
 
@@ -470,6 +530,35 @@ function nastavViditelnost(id, povoleno) {
             radio.closest(".barva").style.opacity = "0.3";
         }
     });
+}
+
+function aktualizujZakonceni() {
+    const vybranaBarva = document.querySelector('input[name="barva"]:checked');
+    if (!vybranaBarva) return;
+
+    const vlastnosti = vlastnostiBarev[vybranaBarva.value];
+    const sekce = document.getElementById("sekce-zakonceni");
+
+    if (!vlastnosti.mrizka && !vlastnosti.oblouk) {
+        // jen rovné zakončení
+        sekce.style.display = "block";
+
+        document.querySelector('input[value="mrizka"]').checked = false;
+        document.querySelector('input[value="oblouk"]').checked = false;
+
+        document.querySelector('input[value="mrizka"]').closest(".volba").style.display = "none";
+        document.querySelector('input[value="oblouk"]').closest(".volba").style.display = "none";
+    } else {
+        sekce.style.display = "block";
+
+        document.querySelector('input[value="mrizka"]').closest(".volba").style.display = "block";
+        document.querySelector('input[value="oblouk"]').closest(".volba").style.display = "block";
+    }
+}
+
+function zmenaBarvy() {
+    aktualizujVolbyPodleBarvy();
+    aktualizujZakonceni();
 }
 
 

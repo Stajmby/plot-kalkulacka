@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="cs">
 <head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <meta charset="UTF-8">
     <title>Kalkulačka betonového plotu</title>
 
@@ -21,10 +23,10 @@
     }
 
     .kalkulacka {
-        max-width: 720px;
+    max-width: 1100px;   /* ← šířka pro desktop */
         margin: 0 auto;
         background: #ffffff;
-        padding: 25px;
+        padding: 30px;
         border-radius: 10px;
         box-shadow: 0 10px 25px rgba(0,0,0,0.08);
 	position: relative;
@@ -207,30 +209,108 @@ margin-top: 10px;
 .vysky {
     display: flex;
     gap: 12px;
-    flex-wrap: wrap;
+    flex-wrap: 100%;
 }
 
 .bublina-vyska {
     cursor: pointer;
+    flex: 1;              /* ← KAŽDÁ BUBLINA STEJNĚ ŠIROKÁ */
+    text-align: center;
 }
+
 
 .bublina-vyska input {
     display: none;
 }
 
 .bublina-vyska span {
-    display: inline-block;
-    padding: 12px 18px;
+    display: block;       /* ← DŮLEŽITÉ */
+    padding: 14px 0;
     border-radius: 30px;
     border: 2px solid #2e5e3a;
     font-weight: bold;
     color: #2e5e3a;
 }
 
+
 .bublina-vyska input:checked + span {
     background: #2e5e3a;
     color: white;
 }
+
+@media (max-width: 600px) {
+
+    .vysky {
+        flex-wrap: wrap;   /* ← dovolíme zalomení */
+    }
+
+    .bublina-vyska {
+        flex: 1 1 45%;     /* ← 2 bubliny na řádek */
+    }
+}
+
+@media (max-width: 768px) {
+
+    body {
+        padding: 10px;
+    }
+
+    .kalkulacka {
+        max-width: 100%;
+        padding: 16px;
+        border-radius: 0;
+    }
+
+    h1 {
+        font-size: 22px;
+    }
+
+    label {
+        font-size: 15px;
+    }
+
+    button {
+        font-size: 16px;
+        padding: 14px;
+    }
+
+    /* obrázky obecně */
+    img {
+        max-width: 100%;
+        height: auto;
+    }
+
+    /* bubliny výšky */
+    .vysky {
+        flex-wrap: wrap;
+    }
+
+    .bublina-vyska {
+        flex: 1 1 100%;
+    }
+
+    /* barvy (kolečka) */
+    .barvy {
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    .barva {
+        flex: 1 1 45%;
+    }
+
+    /* horní zakončení */
+    .zakonceni {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .volba img {
+        max-width: 90%;
+    }
+
+}
+
 
     </style>
 </head>
@@ -268,6 +348,7 @@ margin-top: 10px;
 -->
 
 <p><strong>Výška plotu:</strong></p>
+
 <div class="vysky">
 
     <label class="bublina-vyska">
@@ -296,7 +377,7 @@ margin-top: 10px;
     </label>
 
 </div>
-
+<div id="chyba-vyska" style="color:red; font-size:14px;"></div>
 
 <div class="sekce">
     <p><strong>Barva:</strong></p>
@@ -366,7 +447,7 @@ margin-top: 10px;
 
 <p id="info-vyska" style="font-size:14px; color:#555;"></p>
 
-<div id="chyba-vyska" style="color:red; font-size:14px;"></div>
+
 
 
 

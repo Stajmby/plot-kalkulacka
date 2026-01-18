@@ -204,6 +204,33 @@ margin-top: 10px;
     font-size: 14px;
 }
 
+.vysky {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.bublina-vyska {
+    cursor: pointer;
+}
+
+.bublina-vyska input {
+    display: none;
+}
+
+.bublina-vyska span {
+    display: inline-block;
+    padding: 12px 18px;
+    border-radius: 30px;
+    border: 2px solid #2e5e3a;
+    font-weight: bold;
+    color: #2e5e3a;
+}
+
+.bublina-vyska input:checked + span {
+    background: #2e5e3a;
+    color: white;
+}
 
     </style>
 </head>
@@ -223,18 +250,52 @@ margin-top: 10px;
         Délka plotu (m):
         <input type="number" id="delka" required>
     </label>
-
+<!--
 <label>
     Výška plotu:
-    <select id="vyska" onchange="aktualizujBarvy()">
-        <option value="">Vyberte výšku</option>
-        <option value="100">100 cm</option>
-        <option value="150">150 cm</option>
-        <option value="175">175 cm</option>
-        <option value="200">200 cm</option>
-        <option value="250">250 cm</option>
-    </select>
+
+<select id="vyska" onchange="aktualizujBarvy()">
+    <option value="">Vyberte výšku</option>
+    <option value="100">100 cm</option>
+    <option value="150">150 cm</option>
+    <option value="175">175 cm</option>
+    <option value="200">200 cm</option>
+    <option value="250">250 cm</option>
+</select>
+
+
 </label>
+-->
+
+<p><strong>Výška plotu:</strong></p>
+<div class="vysky">
+
+    <label class="bublina-vyska">
+        <input type="radio" name="vyska" value="100" onchange="zmenaVysky()">
+        <span>100 cm</span>
+    </label>
+
+    <label class="bublina-vyska">
+        <input type="radio" name="vyska" value="150" onchange="zmenaVysky()">
+        <span>150 cm</span>
+    </label>
+
+    <label class="bublina-vyska">
+        <input type="radio" name="vyska" value="175" onchange="zmenaVysky()">
+        <span>175 cm</span>
+    </label>
+
+    <label class="bublina-vyska">
+        <input type="radio" name="vyska" value="200" onchange="zmenaVysky()">
+        <span>200 cm</span>
+    </label>
+
+    <label class="bublina-vyska">
+        <input type="radio" name="vyska" value="250" onchange="zmenaVysky()">
+        <span>250 cm</span>
+    </label>
+
+</div>
 
 
 <div class="sekce">
@@ -482,7 +543,11 @@ const vlastnostiBarev = {
 };
 
 function aktualizujBarvy() {
-    const vyska = document.getElementById("vyska").value;
+    const vybranaVyska = document.querySelector('input[name="vyska"]:checked');
+if (!vybranaVyska) return;
+
+const vyska = vybranaVyska.value;
+
     const info = document.getElementById("info-vyska");
     const barvyRadia = document.querySelectorAll('input[name="barva"]');
 
@@ -566,6 +631,10 @@ function aktualizujZakonceni() {
 function zmenaBarvy() {
     aktualizujVolbyPodleBarvy();
     aktualizujZakonceni();
+}
+
+function zmenaVysky() {
+    aktualizujBarvy();
 }
 
 

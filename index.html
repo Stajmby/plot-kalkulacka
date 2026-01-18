@@ -23,7 +23,7 @@
     }
 
     .kalkulacka {
-    max-width: 1100px;   /* ← šířka pro desktop */
+    max-width: 1200px;   /* ← šířka pro desktop */
         margin: 0 auto;
         background: #ffffff;
         padding: 30px;
@@ -84,25 +84,18 @@
 	.logo {
     display: block;
     margin: 15px auto 10px auto; /* ← TADY */
-    max-width: 400px;
+    width: 50%;
 }
 
 
 	.zed {
+            display: block;
     width: 100%;
-    max-height: 140px;
+    max-height: 300px;
     object-fit: cover;
     border-radius: 8px;
 margin-top: 10px; 
     margin-bottom: 15px;
-}
-
-	.fotka {
-    position: fixed;
-    top: 20px;
-    left: 20px;
-    max-width: 100px;
-    border-radius: 10px;
 }
 
 .barvy {
@@ -316,9 +309,9 @@ margin-top: 10px;
 </head>
 
 <body>
-<img src="Martin Steinbauer.png" alt="Foto nenalezeno" class="fotka">
+
 <form class="kalkulacka"
-      action="https://formspree.io/f/mykkkenv"
+        action="https://formspree.io/f/mykkkenv"
       method="POST">
 
 	<img src="logo-ploty-martas.png" alt="Logo nenalezeno" class="logo">
@@ -330,22 +323,7 @@ margin-top: 10px;
         Délka plotu (m):
         <input type="number" id="delka" required>
     </label>
-<!--
-<label>
-    Výška plotu:
 
-<select id="vyska" onchange="aktualizujBarvy()">
-    <option value="">Vyberte výšku</option>
-    <option value="100">100 cm</option>
-    <option value="150">150 cm</option>
-    <option value="175">175 cm</option>
-    <option value="200">200 cm</option>
-    <option value="250">250 cm</option>
-</select>
-
-
-</label>
--->
 
 <p><strong>Výška plotu:</strong></p>
 
@@ -378,7 +356,7 @@ margin-top: 10px;
 
 </div>
 <div id="chyba-vyska" style="color:red; font-size:14px;"></div>
-
+<p id="info-vyska" style="font-size:17px; color:#ff0000;"></p>
 <div class="sekce">
     <p><strong>Barva:</strong></p>
 
@@ -418,6 +396,9 @@ margin-top: 10px;
 
 <div class="sekce" id="sekce-zakonceni">
 
+
+<p id="info-zakonceni" style="font-size:17px; color:#ff0000;"></p>
+
     <p><strong>Zvolte horní zakončení:</strong></p>
 
     <div class="zakonceni">
@@ -443,10 +424,6 @@ margin-top: 10px;
     </div>
 
 </div>
-
-
-<p id="info-vyska" style="font-size:14px; color:#555;"></p>
-
 
 
 
@@ -587,6 +564,12 @@ const systemyPlotu = {
   }
 };
 
+const infoZakonceniPodleBarvy = {
+  grafit: "Pro barvu grafit není dostupná mřížka ani oblouk.",
+  hneda: "Pro barvu hnědá není dostupná mřížka ani oblouk.",
+  seda: "",
+  piskovec: ""
+};
 
 
 const vlastnostiBarev = {
@@ -603,7 +586,7 @@ const vlastnostiBarev = {
     mrizka: false,
     oblouk: false,
     roh: false,
-    typyDesek: ["jediny"]
+    typyDesek: ["jednostranna"]
   },
 
   grafit: {
@@ -611,7 +594,7 @@ const vlastnostiBarev = {
     mrizka: false,
     oblouk: false,
     roh: false,
-    typyDesek: ["jediny"]
+    typyDesek: ["jednostranna"]
   },
 
   piskovec: {
@@ -625,50 +608,11 @@ const vlastnostiBarev = {
 
 function aktualizujBarvy() {
     const vybranaVyska = document.querySelector('input[name="vyska"]:checked');
-if (!vybranaVyska) return;
+    if (!vybranaVyska) return;
 
-const vyska = vybranaVyska.value;
-
+    const vyska = Number(vybranaVyska.value);
     const info = document.getElementById("info-vyska");
     const barvyRadia = document.querySelectorAll('input[name="barva"]');
-
-    // když není vybraná výška
-    if (!vyska) {
-        info.textContent = "";
-        barvyRadia.forEach(radio => {
-            radio.disabled = true;
-            radio.checked = false;
-            radio.closest(".barva").style.opacity = "0.4";
-        });
-        return;
-    }
-
-function aktualizujVolbyPodleBarvy() {
-    const vybranaBarva = document.querySelector('input[name="barva"]:checked');
-    if (!vybranaBarva) return;
-
-    const vlastnosti = vlastnostiBarev[vybranaBarva.value];
-
-    nastavViditelnost("sokl", vlastnosti.sokl);
-    nastavViditelnost("mrizka", vlastnosti.mrizka);
-    nastavViditelnost("oblouk", vlastnosti.oblouk);
-}
-
-function nastavViditelnost(id, povoleno) {
-    const el = document.getElementById(id);
-    if (!el) return;
-
-    const label = el.closest("label");
-    if (!label) return;
-
-    if (povoleno) {
-        label.style.display = "block";
-    } else {
-        el.checked = false;
-        label.style.display = "none";
-    }
-}
-
 
     const povoleneBarvy = systemyPlotu[vyska].barvy;
     info.textContent = systemyPlotu[vyska].info;
@@ -690,34 +634,39 @@ function aktualizujZakonceni() {
     if (!vybranaBarva) return;
 
     const vlastnosti = vlastnostiBarev[vybranaBarva.value];
-    const sekce = document.getElementById("sekce-zakonceni");
+    const zakonceniRadia = document.querySelectorAll('input[name="zakonceni"]');
+    const infoZakonceni = document.getElementById("info-zakonceni");
 
-    if (!vlastnosti.mrizka && !vlastnosti.oblouk) {
-        // jen rovné zakončení
-        sekce.style.display = "block";
+    zakonceniRadia.forEach(radio => {
+        if (radio.value === "mrizka") {
+            radio.disabled = !vlastnosti.mrizka;
+            radio.closest(".volba").style.opacity = vlastnosti.mrizka ? "1" : "0.3";
+            if (!vlastnosti.mrizka) radio.checked = false;
+        }
 
-        document.querySelector('input[value="mrizka"]').checked = false;
-        document.querySelector('input[value="oblouk"]').checked = false;
+        if (radio.value === "oblouk") {
+            radio.disabled = !vlastnosti.oblouk;
+            radio.closest(".volba").style.opacity = vlastnosti.oblouk ? "1" : "0.3";
+            if (!vlastnosti.oblouk) radio.checked = false;
+        }
+    });
 
-        document.querySelector('input[value="mrizka"]').closest(".volba").style.display = "none";
-        document.querySelector('input[value="oblouk"]').closest(".volba").style.display = "none";
-    } else {
-        sekce.style.display = "block";
-
-        document.querySelector('input[value="mrizka"]').closest(".volba").style.display = "block";
-        document.querySelector('input[value="oblouk"]').closest(".volba").style.display = "block";
-    }
-}
-
-function zmenaBarvy() {
-    aktualizujVolbyPodleBarvy();
-    aktualizujZakonceni();
+    infoZakonceni.textContent =
+        infoZakonceniPodleBarvy[vybranaBarva.value] || "";
 }
 
 function zmenaVysky() {
     aktualizujBarvy();
 }
 
+function zmenaBarvy() {
+    const vybranaBarva = document.querySelector('input[name="barva"]:checked');
+    if (!vybranaBarva) return;
+
+    console.log("Vybraná barva:", vybranaBarva.value);
+
+    aktualizujZakonceni();
+}
 
 </script>
 

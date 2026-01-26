@@ -8,7 +8,6 @@
 
     <style>
 
-
     :root {
         --primarni: #2e5e3a;
         --sekundarni: #eef3ef;
@@ -87,7 +86,6 @@
     width: 50%;
 }
 
-
 	.zed {
             display: block;
     width: 100%;
@@ -139,6 +137,10 @@ margin-top: 10px;
     background-image: url("hneda.png");
 }
 
+.kolecko.sedadrevo {
+    background-image: url("seda-drevo.png");
+}
+
 .kolecko.grafit {
     background-image: url("grafit.png");
 }
@@ -165,13 +167,11 @@ margin-top: 10px;
     margin-top: 10px;
 }
 
-
 .volba {
     text-align: center;
     cursor: pointer;
     padding: 16px;      /* ← TADY SE ZVĚTŠUJE OKÉNKO */
 }
-
 
 .volba input {
     display: none;
@@ -186,12 +186,10 @@ margin-top: 10px;
 }
 
 
-
 .volba input:checked + img {
     outline: 4px solid #2e5e3a;
     outline-offset: 4px; /* ← TADY SE ODSOUVÁ RÁMEČEK */
 }
-
 
 .volba span {
     display: block;
@@ -202,7 +200,7 @@ margin-top: 10px;
 .vysky {
     display: flex;
     gap: 12px;
-    flex-wrap: 100%;
+    flex-wrap: wrap;
 }
 
 .bublina-vyska {
@@ -210,7 +208,6 @@ margin-top: 10px;
     flex: 1;              /* ← KAŽDÁ BUBLINA STEJNĚ ŠIROKÁ */
     text-align: center;
 }
-
 
 .bublina-vyska input {
     display: none;
@@ -224,7 +221,6 @@ margin-top: 10px;
     font-weight: bold;
     color: #2e5e3a;
 }
-
 
 .bublina-vyska input:checked + span {
     background: #2e5e3a;
@@ -301,10 +297,82 @@ margin-top: 10px;
     .volba img {
         max-width: 90%;
     }
-
 }
 
+    .dekor {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+    }
 
+    .dekor .volba {
+    flex: 1 1 45%;
+    }
+
+        .dekorsloup {
+        display: flex;
+        gap: 12px;
+        flex-wrap: nowrap;
+    }
+
+    .dekorsloup img {
+  max-width: 50%;
+  height: auto;
+    } 
+
+    .dekorsloup .volba {
+    flex: 1 1 45%;
+    }
+
+    .radek-strany {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+/* kratší input */
+.delka-strany {
+  max-width: 120px;
+  padding: 6px 8px;
+  font-size: 15px;
+}
+
+/* červené kolečko s křížkem */
+.odebrat-stranu {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: none;
+  background: #d32f2f;
+  color: white;
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.odebrat-stranu:hover {
+  background: #b71c1c;
+}
+
+/* Nastavení zaškrtávacího okénka */
+.pravouhel-label {
+  display: inline-flex;   /* ⬅️ KLÍČ */
+  align-items: center;
+  gap: 6px;
+
+  font-weight: normal;
+  font-size: 14px;
+}
+
+/* Zvětšuje zaškrtávací okénko ohledně úhlu */
+.pravouhel-label input[type="checkbox"] {
+  transform: scale(1.3);
+  margin: 0;
+}
     </style>
 </head>
 
@@ -319,11 +387,20 @@ margin-top: 10px;
 
     <h1>Kalkulačka betonového plotu</h1>
 
-    <label>
-        Délka plotu (m):
-        <input type="number" id="delka" required>
-    </label>
+    <!-- <p style="text-align:center; font-size:14px; margin-top:-10px;"> -->
+    <!-- Jedná se o orientační kalkulačku.   -->
+    <a href="https://www.levne-pletivo.cz/ukazka-realizaci/?pv403=3832"
+       target="_blank"
+       style="color:#2e5e3a; font: size 20px;;">
+        Prohlédněte si naše realizace betonových plotů
+    </a>
+</p>
 
+<div id="strany"></div>
+
+<button type="button" onclick="pridejStranu()">
+  Přidat stranu
+</button>
 
 <p><strong>Výška plotu:</strong></p>
 
@@ -355,47 +432,50 @@ margin-top: 10px;
     </label>
 
 </div>
-<div id="chyba-vyska" style="color:red; font-size:14px;"></div>
-<p id="info-vyska" style="font-size:17px; color:#ff0000;"></p>
-<div class="sekce">
+
+    <div id="chyba-vyska" style="color:red; font-size:14px;"></div>
+    <p id="info-vyska" style="font-size:17px; color:#ff0000;"></p>
+    <div class="sekce">
     <p><strong>Barva:</strong></p>
 
     <div class="barvy">
 
-
-<label class="barva">
-    <input type="radio" name="barva" value="seda" onchange="zmenaBarvy()">
-    <span class="kolecko seda"></span>
-    <span>Šedá</span>
-</label>
-
-
-      <label class="barva">
-    <input type="radio" name="barva" value="piskovec" onchange="zmenaBarvy()">
-    <span class="kolecko piskovec"></span>
-    <span>Pískovcová</span>
-</label>
+    <label class="barva">
+        <input type="radio" name="barva" value="seda" checked onchange="zmenaBarvy()">
+        <span class="kolecko seda"></span>
+        <span>Šedá</span>
+    </label>
 
 
-<label class="barva">
-    <input type="radio" name="barva" value="hneda" onchange="zmenaBarvy()">
-    <span class="kolecko hneda"></span>
-    <span>Hnědá</span>
-</label>
+    <label class="barva">
+        <input type="radio" name="barva" value="piskovec" onchange="zmenaBarvy()">
+        <span class="kolecko piskovec"></span>
+        <span>Pískovcová</span>
+    </label>
 
+    <label class="barva">
+        <input type="radio" name="barva" value="hneda" onchange="zmenaBarvy()">
+        <span class="kolecko hneda"></span>
+        <span>Hnědá</span>
+    </label>
 
-<label class="barva">
-    <input type="radio" name="barva" value="grafit" onchange="zmenaBarvy()">
-    <span class="kolecko grafit"></span>
-    <span>Grafit</span>
-</label>
+    <label class="barva">
+        <input type="radio" name="barva" value="sedadrevo" onchange="zmenaBarvy()">
+        <span class="kolecko sedadrevo"></span>
+        <span>Šedá-dřevo</span>
+    </label>
+
+    <label class="barva">
+        <input type="radio" name="barva" value="grafit" onchange="zmenaBarvy()">
+        <span class="kolecko grafit"></span>
+        <span>Grafit</span>
+    </label>
 
     </div>
 </div>
 
 
 <div class="sekce" id="sekce-zakonceni">
-
 
 <p id="info-zakonceni" style="font-size:17px; color:#ff0000;"></p>
 
@@ -404,39 +484,107 @@ margin-top: 10px;
     <div class="zakonceni">
 
         <label class="volba">
-            <input type="radio" name="zakonceni" value="rovne" checked>
-            <img src="rovne2.png" alt="Rovné zakončení">
+            <input type="radio" name="zakonceni" value="rovne" checked onchange="zmenaZakonceni()">
+            <img src="rovne_seda.png" data-typ="zakonceni" data-hodnota="rovne" alt="Rovné zakončení">
             <span>Rovné</span>
         </label>
 
         <label class="volba">
-            <input type="radio" name="zakonceni" value="mrizka">
-            <img src="mrizka2.png" alt="Mřížka">
+            <input type="radio" name="zakonceni" value="mrizka" onchange="zmenaZakonceni()">
+           <img src="mrizka_seda.png" data-typ="zakonceni" data-hodnota="mrizka" alt="Rovné zakončení">
             <span>Mřížka</span>
         </label>
 
         <label class="volba">
-            <input type="radio" name="zakonceni" value="oblouk">
-            <img src="oblouk2.png" alt="Oblouk">
+            <input type="radio" name="zakonceni" value="oblouk" onchange="zmenaZakonceni()">
+            <img src="oblouk_seda.png" data-typ="zakonceni" data-hodnota="oblouk" alt="Rovné zakončení">
             <span>Oblouk</span>
         </label>
 
-    </div>
 
+<!-- ZAKONČENÍ PLOTOVKA. Pro zobrazení zruš zakomentování. Není napojeno na žádné výpočty. -->
+        <!-- <label class="volba">
+            <input type="radio" name="zakonceni" value="plotovka">
+            <img src="plotovka.png" alt="plotovka">
+            <span>Plotovka</span>
+        </label> -->
+    </div>
 </div>
 
+<p id="info-dekor" style="font-size:17px; color:#ff0000;"></p>
 
+    <p><strong>Zvolte typ dekoru:</strong></p>
 
+    <div class="dekor">
+
+        <label class="volba">
+            <input type="radio" name="dekor" value="jednostranna" checked>
+           <img src="jednostranna_seda.png"
+     data-typ="dekor"
+     data-hodnota="jednostranna">
+            <span>Jednostranná</span>
+        </label>
+
+        <label class="volba">
+            <input type="radio" name="dekor" value="oboustranna">
+    <img src="oboustranna_seda.png"
+     data-typ="dekor"
+     data-hodnota="oboustranna">
+            <span>Oboustranná</span>
+        </label>
+    </div>
+</div>
+
+<p id="info-dekorsloup" style="font-size:17px; color:#ff0000;"></p>
+
+    <p><strong>Zvolte typ sloupku:</strong></p>
+
+    <div class="dekorsloup">
+
+        <label class="volba">
+            <input type="radio" name="dekorsloup" value="hladky" checked>
+<img src="hladky_seda.png"
+     data-typ="sloupek"
+     data-hodnota="hladky">
+            <span>Hladký</span>
+        </label>
+
+        <label class="volba">
+            <input type="radio" name="dekorsloup" value="jedenvzor">
+<img src="jedenvzor_seda.png"
+     data-typ="sloupek"
+     data-hodnota="jedenvzor">
+            <span>Jednostranně vzorovaný</span>
+        </label>
+
+        <label class="volba">
+            <input type="radio" name="dekorsloup" value="dvavzory">
+<img src="dvavzory_seda.png"
+     data-typ="sloupek"
+     data-hodnota="dvavzory">
+            <span>Oboustranně vzorovaný</span>
+        </label>
+    </div>
+</div>
+
+<div id="strany"></div>
+
+<p id="info-rohy" style="font-size:17px; color:#ff0000;"></p>
 
     <button type="button" onclick="vypocitejCenu()">
         Vypočítat cenu
     </button>
-
+<br><br>
+    <label>
+        Kalkulace vychází z použití celých betonových desek. Případné odřezy se dále nezapočítávají.
+    </label>
+<br><br>
     <p id="vysledek"></p>
-
+<br><br>
+    <p id="vysledekZkusebni"></p>
     <!-- skrytý výpočet pro Formspree -->
     <input type="hidden" name="vypocet" id="vypocet-hidden">
-
+    
     <label>
         Jméno:
         <input type="text" name="jmeno" required>
@@ -451,166 +599,440 @@ margin-top: 10px;
         Odeslat poptávku
     </button>
 
+    <button type="button" onclick="doKosiku()">
+  Přidat do košíku
+</button>
+
+
 </form>
 
 <script>
+
+const sloupkyPodleBarvy = {
+  seda: ["hladky", "jedenvzor", "dvavzory"],
+  piskovec: ["hladky", "jedenvzor", "dvavzory"],
+  sedadrevo: ["hladky", "jedenvzor", "dvavzory"],
+
+  hneda: ["dvavzory"],     // 🔴 jen jeden možný
+  grafit: ["hladky"]       // 🔴 jen jeden možný
+};
+
+const katalog = {
+  deska: {
+    plna: {
+      seda: {
+        jednostranna: "10008",
+        oboustranna: "10009"
+      },      
+      piskovec: {
+        jednostranna: "10112",
+        oboustranna: "10096"
+      },
+      hneda: {
+        oboustranna: "10510"
+      },
+        sedadrevo: {
+    oboustranna: "10515"
+    },
+        grafit: {
+    oboustranna: "10410"
+    }
+    },
+
+    oblouk: {
+      seda: {
+        jednostranna:"10093",
+        oboustranna: "10091"
+      },
+      piskovec: {
+        jednostranna:"10099",
+        oboustranna: "10095"
+      }
+    },
+
+        mrizka: {
+      seda: {
+        jednostranna:"10092"
+      },
+      piskovec: {
+        jednostranna:"10098"
+      }
+  },
+      sokl: {
+      seda: {
+        jednostranna:"10090",
+        oboustranna: "10089"
+      },
+      piskovec: {
+        jednostranna:"10097",
+        oboustranna: "10094"
+            }
+        }
+    }
+};
+
+katalog.sloupek = {
+  koncovy: {
+    100: {
+      seda: {
+        hladky: "20001",
+        jedenvzor: "20002",
+        dvavzory: "20003"
+      },
+      hneda: {
+        dvavzory: "20010"
+      }
+    }
+  },
+
+  rohovy: {
+    100: {
+      seda: {
+        hladky: "20101"
+      }
+    }
+  },
+
+  prubezny: {
+    100: {
+      seda: {
+        hladky: "20201",
+        jedenvzor: "20202",
+        dvavzory: "20203"
+      }
+    }
+  }
+};
+
 async function vypocitejCenu() {
-    
-const delka = Number(document.getElementById("delka").value);
-    const vyska = Number(document.getElementById("vyska").value);
 
-if (!delka || delka <= 0) {
-        alert("Zadejte platnou délku plotu v metrech.");
-        return;
-    }
+  // 🔹 F-1: struktura materiálu (zatím jen připravená)
+  const material = {
+    plna: 0,
+    sokl: 0,
+    mrizka: 0,
+    oblouk: 0
+  };
 
-    // kontrola výšky
-    const povoleneVysky = [100, 150, 200, 250];
-    if (!povoleneVysky.includes(vyska)) {
-        alert("Výška plotu může být pouze 100, 150, 200 nebo 250cm.");
-        return;
-    }
+  /* =====================
+     1️⃣ NAČTENÍ VSTUPŮ
+  ===================== */
 
 
+  const vybranaVyska = document.querySelector('input[name="vyska"]:checked');
+  const vybranaBarva = document.querySelector('input[name="barva"]:checked');
+  const vybraneZakonceni = document.querySelector('input[name="zakonceni"]:checked');
+
+  if (!vybranaVyska) {
+    alert("Vyberte výšku plotu.");
+    return;
+  }
+
+  if (!vybranaBarva) {
+    alert("Vyberte barvu plotu.");
+    return;
+  }
+
+  const strany = ziskejStrany();
+  if (strany.length === 0) {
+    alert("Zadejte alespoň jednu stranu s délkou.");
+    return;
+  }
+
+  const vyska = Number(vybranaVyska.value);
+
+  /* =====================
+     2️⃣ ZÁKLADNÍ VÝPOČTY
+  ===================== */
+
+  const pocetPoli = spocitejPoli(strany);
+
+/* =====================
+   D1 – DESKY / SOKL / MŘÍŽKA / OBLOUK
+===================== */
+
+    // Základní počet plných desek podle výšky
+if (vyska === 100) material.plna = pocetPoli * 2;
+if (vyska === 150) material.plna = pocetPoli * 3;
+if (vyska === 175) material.plna = pocetPoli * 3;
+if (vyska === 200) material.plna = pocetPoli * 4;
+if (vyska === 250) material.plna = pocetPoli * 5;
 
 
-    const sirkaPole = 2;
-    const pocetPoli = Math.ceil(delka / sirkaPole);
-    const pocetSloupku = pocetPoli + 1;
 
-    let desekNaPole = 0;
-    if (vyska === 100) desekNaPole = 2;
-    if (vyska === 150) desekNaPole = 3;
-    if (vyska === 200) desekNaPole = 4;
-    if (vyska === 250) desekNaPole = 5;
+  const jeMrizka = vybraneZakonceni?.value === "mrizka";
+  const jeOblouk = vybraneZakonceni?.value === "oblouk";
+  const jeRovne  = vybraneZakonceni?.value === "rovne";
 
-    const pocetDesek = pocetPoli * desekNaPole;
+/// ===== 175 CM =====
+if (vyska === 175) {
 
-    const response = await fetch("ceny.json");
-    const ceny = await response.json();
+  if (jeRovne) {
+    material.sokl = pocetPoli;
+  }
 
-    const cenaPaneluCelkem = pocetDesek * ceny.panel_standard;
-    const cenaSloupkuPrubeznych = (pocetSloupku - 1) * ceny.sloupek_prubezny;
-    const cenaSloupkuKoncovych = 2 * ceny.sloupek_koncovy;
+  if (jeOblouk) {
+    material.plna -= pocetPoli;
+    material.sokl = pocetPoli;
+    material.oblouk = pocetPoli;
+  }
 
-    const pocetRohovychSloupku =
-        document.getElementById("roh").checked ? 1 : 0;
-
-    const cenaRohovychSloupku =
-        pocetRohovychSloupku * ceny.sloupek_rohovy;
-
-    const celkovaCena =
-        cenaPaneluCelkem +
-        cenaSloupkuPrubeznych +
-        cenaSloupkuKoncovych +
-        cenaRohovychSloupku;
-
-    const vystup =
-        `<strong>Materiál:</strong><br>
-        Počet polí: ${pocetPoli}<br>
-        Počet sloupků: ${pocetSloupku}<br>
-        Počet desek: ${pocetDesek}<br><br>
-
-        <strong>Cena:</strong><br>
-        Panely: ${cenaPaneluCelkem.toLocaleString()} Kč<br>
-        Sloupky průběžné: ${cenaSloupkuPrubeznych.toLocaleString()} Kč<br>
-        Sloupky koncové: ${cenaSloupkuKoncovych.toLocaleString()} Kč<br>
-        Sloupky rohové: ${cenaRohovychSloupku.toLocaleString()} Kč<br>
-        <strong>Celkem: ${celkovaCena.toLocaleString()} Kč</strong>`;
-
-    document.getElementById("vysledek").innerHTML = vystup;
-    document.getElementById("vypocet-hidden").value =
-        vystup.replace(/<br>/g, "\n").replace(/<[^>]*>/g, "");
+  if (jeMrizka) {
+    material.mrizka = pocetPoli;
+    // sokl ZÁMĚRNĚ NE
+  }
+}
+   /// ===== MŘÍŽKA – MIMO 175 CM =====
+if (jeMrizka && vyska !== 175) {
+  material.plna -= pocetPoli;   // nahradí jednu plnou desku
+  material.mrizka = pocetPoli;
+  material.sokl = pocetPoli;
+}
+   /// ===== OBLOUK – MIMO 175 CM =====
+if (jeOblouk && vyska !== 175) {
+  material.plna -= pocetPoli;   // nahradí jednu plnou desku
+  material.oblouk = pocetPoli;
 }
 
-function kontrolaVysky() {
-    console.log("kontrolaVysky se spustila");
+    // Určujeme typ desky pro spojení s katalogem a ceny.json
+    let typDesky = "plna";
 
-    const vyska = Number(document.getElementById("vyska").value);
-    const chyba = document.getElementById("chyba-vyska");
-    const povoleneVysky = [100, 150, 200, 250];
+    if (jeMrizka) typDesky = "mrizka";
+    if (jeOblouk) typDesky = "oblouk";
 
-    if (!povoleneVysky.includes(vyska)) {
-        chyba.textContent = "Výška plotu může být pouze 100, 150, 200 nebo 250cm.";
-    } else {
-        chyba.textContent = "";
+    // Zjistíme barvu a dekor
+    const barva = vybranaBarva.value;
+
+    const vybranyDekor = document.querySelector('input[name="dekor"]:checked');
+    if (!vybranyDekor) {
+    alert("Vyberte typ dekoru.");
+    return;
     }
+
+    const dekor = vybranyDekor.value; // jednostranna / oboustranna
+
+/* =====================
+   6️⃣ CENY
+===================== */
+
+const response = await fetch("ceny.json");
+if (!response.ok) {
+  alert("Nepodařilo se načíst ceník.");
+  return;
+}
+const ceny = await response.json();
+
+// Ţohle ochrání před chybami.
+const kodDesky =
+  katalog.deska?.[typDesky]?.[barva]?.[dekor];
+
+if (!kodDesky) {
+  alert("Tato kombinace desky není dostupná.");
+  return;
+}
+const cenaJedneDesky = ceny[kodDesky];
+
+if (!cenaJedneDesky) {
+  alert("Cena desky nebyla nalezena v ceníku.");
+  return;
+}
+const cenaDesekCelkem = material.plna * cenaJedneDesky;
+
+let cenaSokluCelkem = 0;
+
+if (material.sokl > 0) {
+
+  let dekorSoklu = dekor;
+
+  // mřížka → sokl je VŽDY jednostranný
+  if (jeMrizka && vyska !== 175) {
+    dekorSoklu = "jednostranna";
+  }
+
+  const kodSoklu =
+  katalog.deska?.sokl?.[barva]?.[dekorSoklu];
+    
+  if (!kodSoklu) {
+    alert("Tato kombinace soklu není dostupná.");
+    return;
+  }
+
+  const cenaSoklu = ceny[kodSoklu];
+  cenaSokluCelkem = material.sokl * cenaSoklu;
+}
+
+// 🔹 F-4: sestavení objednávky (zatím jen test)
+// 1️⃣ sestavení objednávky
+
+window.objednavkaTest = [];
+
+
+try {
+  window.objednavkaTest = sestavObjednavku(
+    material,
+    barva,
+    dekor,
+    vyska,
+    vybraneZakonceni.value
+  );
+} catch (chyba) {
+  alert(chyba);
+  return;
+}
+
+console.log("OBJEDNÁVKA:", window.objednavkaTest);
+
+// 2️⃣ výpočet ceny z objednávky
+let celkovaCena = 0;
+
+try {
+  celkovaCena = spocitejCenuObjednavky(window.objednavkaTest, ceny);
+} catch (chyba) {
+  alert(chyba);
+  return;
+}
+
+/* =====================
+   7️⃣ VÝSTUP
+===================== */
+
+const vystup = `
+  <strong>Materiál:</strong><br>
+  Počet polí: ${pocetPoli}<br>
+
+  Počet desek: ${material.plna}<br>
+  Sokly: ${material.sokl}<br>
+  Mřížky: ${material.mrizka}<br>
+  Oblouky: ${material.oblouk}<br><br>
+
+  <strong>Celkem: ${celkovaCena.toLocaleString()} Kč</strong>
+`;
+
+document.getElementById("vysledek").innerHTML = vystup;
+
+// 3️⃣ uložení objednávky do formuláře
+const objednavkaText = window.objednavkaTest
+  .map(p => `${p.kod} × ${p.kusy} ks`)
+  .join("\n");
+
+document.getElementById("vypocet-hidden").value =
+  `OBJEDNÁVKA:\n${objednavkaText}\n\nCELKEM: ${celkovaCena.toLocaleString()} Kč`;  
+
+
 }
 
 const systemyPlotu = {
   100: {
-    barvy: ["seda"],
-    info: "Ve výšce 100 cm je dostupná pouze barva šedá."
+    barvy: ["seda", "piskovec", "sedadrevo"],
+    info: "Ve výšce 100 cm jsou dostupné barvy šedá a pískovec."
   },
 
   150: {
-    barvy: ["seda", "grafit", "piskovec"],
-    info: "Ve výšce 150 cm jsou dostupné barvy šedá, grafit a pískovec."
+    barvy: ["seda", "grafit", "piskovec", "sedadrevo"],
+    info: "Ve výšce 150 cm jsou dostupné barvy šedá, pískovec a grafit."
   },
 
   175: {
-    barvy: ["seda"],
-    info: "Výška 175 cm je dostupná pouze v barvě šedá."
+    barvy: ["seda", "piskovec"],
+    info: "Ve výšce 175 cm jsou dostupné barvy šedá a pískovec."
   },
 
   200: {
-    barvy: ["seda", "hneda", "grafit", "piskovec"],
-    info: "Výška 200 cm je dostupná ve všech nabízených barvách."
+    barvy: ["seda", "hneda", "grafit", "piskovec", "sedadrevo"],
+    info: "Ve výšce 200 cm jsou dostupné všechny nabízené barvy."
   },
 
   250: {
-    barvy: ["seda", "piskovec"],
-    info: "Ve výšce 250 cm jsou dostupné pouze barvy šedá a pískovec."
+    barvy: ["seda", "piskovec", "sedadrevo"],
+    info: "Ve výšce 250 cm jsou dostupné barvy šedá a pískovec."
   }
 };
 
-const infoZakonceniPodleBarvy = {
-  grafit: "Pro barvu grafit není dostupná mřížka ani oblouk.",
-  hneda: "Pro barvu hnědá není dostupná mřížka ani oblouk.",
-  seda: "",
-  piskovec: ""
-};
-
-
-const vlastnostiBarev = {
+const obrazkyPodleBarvy = {
   seda: {
-    sokl: true,
-    mrizka: true,
-    oblouk: true,
-    roh: true,
-    typyDesek: ["jednostranna", "oboustranna"]
-  },
-
-  hneda: {
-    sokl: false,
-    mrizka: false,
-    oblouk: false,
-    roh: false,
-    typyDesek: ["jednostranna"]
-  },
-
-  grafit: {
-    sokl: false,
-    mrizka: false,
-    oblouk: false,
-    roh: false,
-    typyDesek: ["jednostranna"]
+    zakonceni: {
+      rovne: "rovne_seda.png",
+      mrizka: "mrizka_seda.png",
+      oblouk: "oblouk_seda.png"
+    },
+    dekor: {
+      jednostranna: "jednostranna_seda.png",
+      oboustranna: "oboustranna_seda.png"
+    },
+    sloupek: {
+      hladky: "hladky_seda.png",
+      jedenvzor: "jedenvzor_seda.png",
+      dvavzory: "dvavzory_seda.png"
+    }
   },
 
   piskovec: {
-    sokl: true,
-    mrizka: true,
-    oblouk: true,
-    roh: true,
-    typyDesek: ["jednostranna", "oboustranna"]
-  }
+    zakonceni: {
+      rovne: "rovne_piskovec.png",
+      mrizka: "mrizka_piskovec.png",
+      oblouk: "oblouk_piskovec.png"
+    },
+    dekor: {
+      jednostranna: "jednostranna_piskovec.png",
+      oboustranna: "oboustranna_piskovec.png"
+    },
+    sloupek: {
+      hladky: "hladky_piskovec.png",
+      jedenvzor: "jedenvzor_piskovec.png",
+      dvavzory: "dvavzory_piskovec.png"
+    }
+  },
+
+  hneda: {
+    zakonceni: {
+      rovne: "rovne_hneda.png"
+    },
+    dekor: {
+      oboustranna: "oboustranna_hneda.png"
+    },
+    sloupek: {
+      dvavzory: "dvavzory_hneda.png"
+    }
+  },
+
+   sedadrevo: {
+    zakonceni: {
+      rovne: "rovne_sedadrevo.png"
+    },
+    dekor: {
+      oboustranna: "oboustranna_sedadrevo.png"
+    },
+    sloupek: {
+      hladky: "hladky_seda.png",
+      jedenvzor: "jedenvzor_seda.png",
+      dvavzory: "dvavzory_seda.png"
+    }
+  },
+
+   grafit: {
+    zakonceni: {
+      rovne: "rovne_grafit.png"
+    },
+    dekor: {
+      oboustranna: "oboustranna_grafit.png"
+    },
+    sloupek: {
+      hladky: "hladky_grafit.png"
+    }
+  },
 };
 
 function aktualizujBarvy() {
-    const vybranaVyska = document.querySelector('input[name="vyska"]:checked');
-    if (!vybranaVyska) return;
+const vybranaVyska = document.querySelector('input[name="vyska"]:checked');
 
-    const vyska = Number(vybranaVyska.value);
+if (!vybranaVyska) {
+    document.getElementById("vysledek").innerHTML =
+        "<span style='color:red'>Nejprve vyberte výšku plotu.</span>";
+    return;
+}
+
+const vyska = Number(vybranaVyska.value);
+
     const info = document.getElementById("info-vyska");
     const barvyRadia = document.querySelectorAll('input[name="barva"]');
 
@@ -629,30 +1051,49 @@ function aktualizujBarvy() {
     });
 }
 
-function aktualizujZakonceni() {
-    const vybranaBarva = document.querySelector('input[name="barva"]:checked');
-    if (!vybranaBarva) return;
+function aktualizujObrazkyPodleBarvy() {
+  const vybranaBarva = document.querySelector('input[name="barva"]:checked');
+  if (!vybranaBarva) return;
 
-    const vlastnosti = vlastnostiBarev[vybranaBarva.value];
-    const zakonceniRadia = document.querySelectorAll('input[name="zakonceni"]');
-    const infoZakonceni = document.getElementById("info-zakonceni");
+  const barva = vybranaBarva.value;
+  const mapa = obrazkyPodleBarvy[barva];
+  if (!mapa) return;
 
-    zakonceniRadia.forEach(radio => {
-        if (radio.value === "mrizka") {
-            radio.disabled = !vlastnosti.mrizka;
-            radio.closest(".volba").style.opacity = vlastnosti.mrizka ? "1" : "0.3";
-            if (!vlastnosti.mrizka) radio.checked = false;
-        }
+  document.querySelectorAll("img[data-typ]").forEach(img => {
+    const typ = img.dataset.typ;       // zakonceni / dekor
+    const hodnota = img.dataset.hodnota;
 
-        if (radio.value === "oblouk") {
-            radio.disabled = !vlastnosti.oblouk;
-            radio.closest(".volba").style.opacity = vlastnosti.oblouk ? "1" : "0.3";
-            if (!vlastnosti.oblouk) radio.checked = false;
-        }
-    });
+    if (mapa[typ] && mapa[typ][hodnota]) {
+      img.src = mapa[typ][hodnota];
+    }
+  });
+}
 
-    infoZakonceni.textContent =
-        infoZakonceniPodleBarvy[vybranaBarva.value] || "";
+function aktualizujSloupkyPodleBarvy() {
+  const vybranaBarva = document.querySelector('input[name="barva"]:checked');
+  if (!vybranaBarva) return;
+
+  const barva = vybranaBarva.value;
+  const povolene = sloupkyPodleBarvy[barva] || [];
+
+  const sloupkyRadia = document.querySelectorAll('input[name="dekorsloup"]');
+
+  sloupkyRadia.forEach(radio => {
+    const povoleno = povolene.includes(radio.value);
+
+    radio.disabled = !povoleno;
+    radio.closest(".volba").style.opacity = povoleno ? "1" : "0.3";
+
+    if (!povoleno) {
+      radio.checked = false;
+    }
+  });
+
+  // 🟡 automaticky vybereme jedinou možnost
+  const povoleneRadia = Array.from(sloupkyRadia).filter(r => !r.disabled);
+  if (povoleneRadia.length === 1) {
+    povoleneRadia[0].checked = true;
+  }
 }
 
 function zmenaVysky() {
@@ -660,12 +1101,302 @@ function zmenaVysky() {
 }
 
 function zmenaBarvy() {
-    const vybranaBarva = document.querySelector('input[name="barva"]:checked');
-    if (!vybranaBarva) return;
+  aktualizujUIZKatalogu();
+  aktualizujObrazkyPodleBarvy();
+  aktualizujSloupkyPodleBarvy(); // ⬅️ DŮLEŽITÉ
+}
 
-    console.log("Vybraná barva:", vybranaBarva.value);
+function zmenaZakonceni() {
+  aktualizujUIZKatalogu();
+}
 
-    aktualizujZakonceni();
+function aktualizujUIZKatalogu() {
+  const barvaRadio = document.querySelector('input[name="barva"]:checked');
+  if (!barvaRadio) return;
+
+  const barva = barvaRadio.value;
+
+  /* ========= 1️⃣ ZAKONČENÍ ========= */
+
+  document.querySelectorAll('input[name="zakonceni"]').forEach(radio => {
+    let typ = "plna";
+    if (radio.value === "mrizka") typ = "mrizka";
+    if (radio.value === "oblouk") typ = "oblouk";
+
+    const existuje = katalog.deska?.[typ]?.[barva];
+    radio.disabled = !existuje;
+    radio.closest(".volba").style.opacity = existuje ? "1" : "0.3";
+
+    if (!existuje) radio.checked = false;
+  });
+
+  const povolenaZakonceni = [...document.querySelectorAll('input[name="zakonceni"]')]
+    .filter(r => !r.disabled);
+
+  if (povolenaZakonceni.length === 1) {
+    povolenaZakonceni[0].checked = true;
+  }
+
+  // 🔥 OPRAVA: pokud není vybrané žádné zakončení, vyber první povolené
+const vybraneZakonceni =
+  document.querySelector('input[name="zakonceni"]:checked');
+
+if (!vybraneZakonceni) {
+  const prvniPovolene = Array.from(
+    document.querySelectorAll('input[name="zakonceni"]')
+  ).find(r => !r.disabled);
+
+  if (prvniPovolene) {
+    prvniPovolene.checked = true;
+  }
+}
+
+  /* ========= 2️⃣ DEKOR ========= */
+
+  const zakonceniRadio =
+    document.querySelector('input[name="zakonceni"]:checked');
+  if (!zakonceniRadio) return;
+
+  let typDesky = "plna";
+  if (zakonceniRadio.value === "mrizka") typDesky = "mrizka";
+  if (zakonceniRadio.value === "oblouk") typDesky = "oblouk";
+
+  // 🔥 TVRDÝ RESET DEKORU
+  document.querySelectorAll('input[name="dekor"]').forEach(r => {
+    r.checked = false;
+  });
+
+  document.querySelectorAll('input[name="dekor"]').forEach(radio => {
+    const dekor = radio.value;
+    const existuje = katalog.deska?.[typDesky]?.[barva]?.[dekor];
+
+    radio.disabled = !existuje;
+    radio.closest(".volba").style.opacity = existuje ? "1" : "0.3";
+  });
+
+  const povoleneDekory = [...document.querySelectorAll('input[name="dekor"]')]
+    .filter(r => !r.disabled);
+
+  if (povoleneDekory.length === 1) {
+    povoleneDekory[0].checked = true;
+  }
+
+  // 🧠 POJISTKA – pokud není vybraný žádný dekor, vyber první povolený
+const aktualneVybranyDekor =
+  document.querySelector('input[name="dekor"]:checked');
+
+if (!aktualneVybranyDekor && povoleneDekory.length > 0) {
+  povoleneDekory[0].checked = true;
+}
+}
+
+function ziskejStrany() {
+  return Array.from(document.querySelectorAll(".strana")).map((strana, i) => ({
+    delka: Number(strana.querySelector(".delka-strany").value) || 0,
+    nenavazuje: i === 0
+      ? true
+      : strana.querySelector(".pravy-uhel").checked
+  }));
+}
+
+function pridejStranu() {
+  const container = document.getElementById("strany");
+const jePrvni = container.children.length === 0;
+    const div = document.createElement("div");
+  div.className = "strana";
+
+  div.innerHTML = `
+    <div class="radek-strany">
+      <input
+        type="number"
+        class="delka-strany"
+        placeholder="Délka (m)"
+      >
+
+      ${!jePrvni ? `
+        <button type="button" class="odebrat-stranu" title="Odebrat stranu">×</button>
+
+        <label class="pravouhel-label">
+          <input type="checkbox" class="pravy-uhel">
+          Zaškrtni pokud s předchozí stranou NESVÍRÁ pravý úhel nebo strany nejsou vedle sebe
+        </label>
+      ` : ""}
+    </div>
+  `;
+
+    if (!jePrvni) {
+    div.querySelector(".odebrat-stranu").onclick = () => {
+      div.remove();
+    };
+  
+  container.appendChild(div);
+}
+
+  container.appendChild(div);
+}
+
+pridejStranu();
+
+function spocitejSloupky(strany, vlastnostiBarvy) {
+  let koncove = 0;
+  let rohove = 0;
+
+  strany.forEach((strana, index) => {
+
+    // 1️⃣ první strana – vždy samostatná
+    if (index === 0) {
+      koncove += 2;
+      return;
+    }
+
+    // 2️⃣ nenavazuje → samostatná strana
+    if (strana.nenavazuje) {
+      koncove += 2;
+      return;
+    }
+
+    // 3️⃣ navazuje → vzniká roh
+    if (vlastnostiBarvy.roh) {
+      rohove += 1;
+    } else {
+      // roh není povolen → 2× koncový
+      koncove += 2;
+    }
+  });
+
+  return {
+    koncove,
+    rohove
+  };
+}
+
+function spocitejPrubezneSloupky(strany) {
+  let prubezne = 0;
+
+  strany.forEach(s => {
+    const pole = Math.ceil(s.delka / 2);
+    if (pole > 1) {
+      prubezne += pole - 1;
+    }
+  });
+
+  return prubezne;
+}
+
+function spocitejPoli(strany) {
+  let pole = 0;
+
+  strany.forEach(s => {
+    pole += Math.ceil(s.delka / 2);
+  });
+
+  return pole;
+}
+
+// Převod materiálu na kódy (zásadní) - Z materiálu udělá objednávku.
+function sestavObjednavku(material, barva, dekor, vyska, zakonceni) {
+  const objednavka = [];
+
+  // plné desky
+  if (material.plna > 0) {
+    const kod = katalog.deska.plna?.[barva]?.[dekor];
+    if (!kod) throw "Neexistuje plná deska pro tuto kombinaci";
+    objednavka.push({ kod, kusy: material.plna });
+  }
+
+  // sokly
+  if (material.sokl > 0) {
+    let dekorSoklu = dekor;
+
+    if (zakonceni === "mrizka" && vyska !== 175) {
+      dekorSoklu = "jednostranna";
+    }
+
+    const kod = katalog.deska.sokl?.[barva]?.[dekorSoklu];
+    if (!kod) throw "Neexistuje sokl pro tuto kombinaci";
+    objednavka.push({ kod, kusy: material.sokl });
+  }
+
+  // mřížky
+  if (material.mrizka > 0) {
+    const kod = katalog.deska.mrizka?.[barva]?.jednostranna;
+    if (!kod) throw "Neexistuje mřížka pro tuto kombinaci";
+    objednavka.push({ kod, kusy: material.mrizka });
+  }
+
+  // oblouky
+  if (material.oblouk > 0) {
+    const kod = katalog.deska.oblouk?.[barva]?.[dekor];
+    if (!kod) throw "Neexistuje oblouk pro tuto kombinaci";
+    objednavka.push({ kod, kusy: material.oblouk });
+  }
+
+  return objednavka;
+}
+
+// 🔹 F-5: výpočet ceny z objednávky
+function spocitejCenuObjednavky(objednavka, ceny) {
+  let soucet = 0;
+
+  objednavka.forEach(polozka => {
+    const cenaZaKus = ceny[polozka.kod];
+
+    if (!cenaZaKus) {
+      throw `Chybí cena pro kód ${polozka.kod}`;
+    }
+
+    soucet += cenaZaKus * polozka.kusy;
+  });
+
+  return soucet;
+}
+// 🔹 F-8: vytvoření URL pro košík
+function vytvorKosikovouURL(objednavka) {
+  const polozky = objednavka
+    .map(p => `${p.kod}:${p.kusy}`)
+    .join(",");
+
+  return `https://www.levne-pletivo.cz/?add=${polozky}`;
+}
+
+// 🔹 F-8.2: přesměrování do košíku
+function doKosiku() {
+  if (!window.objednavkaTest || window.objednavkaTest.length === 0) {
+    alert("Nejprve spočítejte cenu.");
+    return;
+  }
+
+  const postData = pripravShoptetPostData(window.objednavkaTest);
+
+  // vytvoříme skrytý formulář
+  const form = document.createElement("form");
+  form.method = "POST";
+  form.action = "https://www.levne-pletivo.cz/action/Cart/add";
+
+
+  // přidáme položky
+  for (const key in postData) {
+    const input = document.createElement("input");
+    input.type = "hidden";
+    input.name = key;
+    input.value = postData[key];
+    form.appendChild(input);
+  }
+
+  document.body.appendChild(form);
+  form.submit();
+}
+
+
+// 🔹 F-8.3: příprava POST dat pro Shoptet košík
+function pripravShoptetPostData(objednavka) {
+  const data = {};
+
+  objednavka.forEach(polozka => {
+    data[`products[${polozka.kod}]`] = polozka.kusy;
+  });
+
+  return data;
 }
 
 </script>
